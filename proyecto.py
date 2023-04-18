@@ -3,6 +3,7 @@ import argparse
 import gym
 import os
 import numpy as np
+import neat
 from neat import nn, population, statistics, parallel
 
 game = "ALE/Galaxian-v5"
