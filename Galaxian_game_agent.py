@@ -8,7 +8,8 @@ import numpy as np
 import pickle
 
 
-env = gym.make("ALE/Galaxian-v5", render_mode='human')
+
+env = gym.make("ALE/Galaxian-v5", render_mode='rgb_array')
 
 imgarray=[]
 
@@ -17,6 +18,7 @@ actions = env.action_space.n
 
 def eval_genomes(genomes, config):
     i = 0
+    print(len(genomes))
     for genome_id, genome in genomes:
         i+=1
 
@@ -27,6 +29,9 @@ def eval_genomes(genomes, config):
 
         inx= int(inx/8)
         iny = int(iny/8)
+
+        #Extracting basic info that will be used for fitness
+
 
         net = neat.nn.RecurrentNetwork.create(genome, config)
 
@@ -48,6 +53,7 @@ def eval_genomes(genomes, config):
             imgarray = np.ndarray.flatten(ob)
 
             nnOutput = net.activate(imgarray)
+            
 
 
             numerical_input = nnOutput.index(max(nnOutput))
@@ -62,14 +68,22 @@ def eval_genomes(genomes, config):
                 counter = 0
             else:
                 counter +=1
-
-            #evryt time it dies it adss 60 to the score and for me it shouldnt be taken
-            if done:
-                print( i,fitness_current)
+            
+            if(counter > 6000 ):
+                done = True
 
             
 
-            genome.fitness = fitness_current
+            #evryt time it dies it adss 60 to the score and for me it shouldnt be taken
+        
+
+            #este es para eliminar aquellos que mueren al chocar y eliminar a las entidades
+
+
+        genome.fitness = fitness_current
+        
+        if done:
+            print( i,fitness_current)
 
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
@@ -80,8 +94,8 @@ p.add_reporter(neat.StdOutReporter(True))
 stats = neat.StatisticsReporter()
 p.add_reporter(stats)
 
-winner = p.run(eval_genomes)
+winner = p.run(eval_genomes, 500)
 
 # save the winner
-with open('winner.pkl', 'wb') as output:
+with open('winner-02.pkl', 'wb') as output:
     pickle.dump(winner, output, 1)
