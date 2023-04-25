@@ -104,5 +104,5 @@ p.add_reporter(stats)
 winner = p.run(eval_genomes, 100)
 
 # save the winner
-with open('winner_try.pkl', 'wb') as output:
+with open('winner_2nd_model.pkl', 'wb') as output:
     pickle.dump(winner, output, 1)
