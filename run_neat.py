@@ -11,9 +11,9 @@ env = gym.make("ALE/Galaxian-v5", render_mode='human')
 ob, info = env.reset()
 
 config = neat.Config(neat.DefaultGenome,neat.DefaultReproduction,
-                    neat.DefaultSpeciesSet,neat.DefaultStagnation,'./config/winer0')
+                    neat.DefaultSpeciesSet,neat.DefaultStagnation,'./config/winer-try')
 
-with open("winner0.pkl", "rb") as f:
+with open("winner_try.pkl", "rb") as f:
     best_bot = pickle.load(f)
 net = neat.nn.feed_forward.FeedForwardNetwork.create(best_bot,config)
 

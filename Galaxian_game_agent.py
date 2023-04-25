@@ -7,6 +7,8 @@ import numpy as np
 
 import pickle
 
+import datos_y_posiciones as analisis
+
 
 
 env = gym.make("ALE/Galaxian-v5", render_mode='rgb_array')
@@ -43,8 +45,10 @@ def eval_genomes(genomes, config):
         done = False
 
         while not done:
+            observ = analisis.analisis_imagen(ob)
             frame += 1
             factor = 0.5
+        
 
             ob = cv2.resize(ob, (inx, iny))
             ob = cv2.cvtColor(ob, cv2.COLOR_BGR2GRAY)
@@ -52,7 +56,10 @@ def eval_genomes(genomes, config):
 
             imgarray = np.ndarray.flatten(ob)
 
-            nnOutput = net.activate(imgarray)
+
+            
+
+            nnOutput = net.activate(observ)
             
 
 
@@ -94,8 +101,8 @@ p.add_reporter(neat.StdOutReporter(True))
 stats = neat.StatisticsReporter()
 p.add_reporter(stats)
 
-winner = p.run(eval_genomes, 500)
+winner = p.run(eval_genomes, 100)
 
 # save the winner
-with open('winner-02.pkl', 'wb') as output:
+with open('winner_try.pkl', 'wb') as output:
     pickle.dump(winner, output, 1)
