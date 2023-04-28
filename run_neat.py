@@ -5,21 +5,21 @@ import time
 import neat
 import pickle
 
-env = gym.make("ALE/Galaxian-v5", render_mode='human')
+env = gym.make("ALE/Galaxian-v5", render_mode='rgb_array')
 
 
 ob, info = env.reset()
 
 config = neat.Config(neat.DefaultGenome,neat.DefaultReproduction,
-                    neat.DefaultSpeciesSet,neat.DefaultStagnation,'./config/winer0')
+                    neat.DefaultSpeciesSet,neat.DefaultStagnation,'./config/winer-1life')
 
-with open("winner0.pkl", "rb") as f:
+with open("winner-1life.pkl", "rb") as f:
     best_bot = pickle.load(f)
 net = neat.nn.feed_forward.FeedForwardNetwork.create(best_bot,config)
 
 inx, iny, inc = env.observation_space.shape
 
-
+fed = 0
 inx= int(inx/8)
 iny = int(iny/8)
 
@@ -37,7 +37,9 @@ while True:
     ai_decision = net.activate(imgarray)
     action = np.argmax(ai_decision)
     ob, reward, done, truncated, info = env.step(action)
+    fed += reward
     if done:
         break
 
 env.close()
+print(fed)
