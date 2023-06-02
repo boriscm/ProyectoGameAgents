@@ -43,7 +43,7 @@ initial_connection      = full_direct
 node_add_prob           = 0.2
 node_delete_prob        = 0.2
 
-# network parameters
+# oppppppppppppponetwork parameters
 num_hidden              = 6
 num_inputs              = 113
 num_outputs             = 6

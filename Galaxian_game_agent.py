@@ -79,11 +79,16 @@ def eval_genomes(genomes, config):
             else:
                 counter +=1
 
-            if(vidas <=2 ): 
+            if(vidas <=2 ):
                 done = True
+
             
             if(counter > 6000 ):
                 done = True
+            
+            if(lives == 0):
+                lives=35
+
 
             
 
@@ -98,21 +103,21 @@ def eval_genomes(genomes, config):
 
 config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                      neat.DefaultSpeciesSet, neat.DefaultStagnation,
-                     'galaxian_config')
+                     'galaxian_config') 
 
 
 def run_neat():
-    p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-763")
+    p = neat.Checkpointer.restore_checkpoint("neat-checkpoint-1015")
     #p = neat.Population(config)
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
     p.add_reporter(neat.Checkpointer(5))
 
-    winner = p.run(eval_genomes, 120)
+    winner = p.run(eval_genomes, 1)
 
     # save the winner
-    with open('winner_more_data1.pkl', 'wb') as output:
+    with open('final_agent.pkl', 'wb') as output:
         pickle.dump(winner, output, 1)
 
 run_neat()
